@@ -8,7 +8,10 @@
 # (at your option) any later version.
 
 DESTDIR	=
-prefix	= /usr/local
+toolchain_path   = /opt/toolchains/toolchain_rpi
+toolchain_prefix = arm-rpi-linux-gnueabi
+
+prefix	= $(toolchain_path)/i2c_tools
 bindir	= $(prefix)/bin
 sbindir	= $(prefix)/sbin
 mandir	= $(prefix)/share/man
@@ -21,14 +24,14 @@ INSTALL_DIR	:= $(INSTALL) -m 755 -d
 INSTALL_PROGRAM	:= $(INSTALL) -m 755
 RM		:= rm -f
 
-CC	?= gcc
+CC	?= $(toolchain_path)/bin/$(toolchain_prefix)-gcc
 
 CFLAGS	?= -O2
 # When debugging, use the following instead
 #CFLAGS	:= -O -g
-CFLAGS	+= -Wall
+CFLAGS	+= -Wall -I. -I$(toolchain_path)/$(toolchain_prefix)/sysroot/usr/include
 
-KERNELVERSION	:= $(shell uname -r)
+KERNELVERSION	:= 3.18.5-7-armv7l
 
 .PHONY: all strip clean install uninstall
 
